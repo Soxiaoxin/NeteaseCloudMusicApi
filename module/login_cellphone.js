@@ -1,4 +1,5 @@
 // 手机登录
+const cookie = require('../util/cookie')
 
 const crypto = require('crypto')
 
@@ -21,7 +22,7 @@ module.exports = async (query, request) => {
     {
       crypto: 'weapi',
       ua: 'pc',
-      cookie: query.cookie,
+      cookie: cookie.get(),
       proxy: query.proxy,
       realIP: query.realIP,
     },

@@ -1,3 +1,5 @@
+const cookie = require('../util/cookie')
+
 module.exports = async (query, request) => {
   const data = {}
   let result = await request(
@@ -6,7 +8,7 @@ module.exports = async (query, request) => {
     data,
     {
       crypto: 'weapi',
-      cookie: query.cookie,
+      cookie: cookie.get(),
       proxy: query.proxy,
       realIP: query.realIP,
     },

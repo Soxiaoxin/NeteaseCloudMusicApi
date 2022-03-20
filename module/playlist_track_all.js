@@ -1,5 +1,6 @@
 // 通过传过来的歌单id拿到所有歌曲数据
 // 支持传递参数limit来限制获取歌曲的数据数量 例如: /playlist/track/all?id=7044354223&limit=10
+const cookie = require('../util/cookie')
 
 module.exports = (query, request) => {
   const data = {
@@ -16,7 +17,7 @@ module.exports = (query, request) => {
 
   return request('POST', `https://music.163.com/api/v6/playlist/detail`, data, {
     crypto: 'api',
-    cookie: query.cookie,
+    cookie: cookie.get(),
     proxy: query.proxy,
     realIP: query.realIP,
   }).then((res) => {
@@ -45,7 +46,7 @@ module.exports = (query, request) => {
       idsData,
       {
         crypto: 'weapi',
-        cookie: query.cookie,
+        cookie: cookie.get(),
         proxy: query.proxy,
         realIP: query.realIP,
       },

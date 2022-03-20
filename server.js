@@ -8,6 +8,7 @@ const cache = require('./util/apicache').middleware
 const { cookieToJson } = require('./util/index')
 const fileUpload = require('express-fileupload')
 const decode = require('safe-decode-uri-component')
+const cookie = require('./util/cookie')
 
 /**
  * The version check result.
@@ -215,7 +216,6 @@ async function consturctServer(moduleDefs) {
         { cookie: req.cookies },
         req.query,
         req.body,
-        req.files,
       )
 
       try {
@@ -223,6 +223,16 @@ async function consturctServer(moduleDefs) {
         console.log('[OK]', decode(req.originalUrl))
 
         const cookies = moduleResponse.cookie
+        console.log('cookie reposonse', cookies)
+        // 手动保存cookie
+        cookies.forEach((c) => {
+          if (c.endsWith('Path=/;')) {
+            const [k, v] = c.split(';')[0].split('=')
+            console.log('cookie to save', k, v)
+            cookie.set(k, v)
+          }
+        })
+
         if (Array.isArray(cookies) && cookies.length > 0) {
           if (req.protocol === 'https') {
             // Try to fix CORS SameSite Problem
